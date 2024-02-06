@@ -1,7 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue'
+import {ref, computed} from 'vue'
 import socksBlueImage from '../assets/socks_blue.jpg'
 import socksGreenImage from '../assets/socks_green.jpg'
+import PrettyButton from "./PrettyButton.vue";
+import ResponsiveWidth from "./ResponsiveWidth.vue";
 
 const props = defineProps({
   premium: {
@@ -18,10 +20,10 @@ const selectedVariant = ref(0)
 const details = ref(['50% cotton', '30% wool', '20% polyester'])
 
 const variants = ref([
-  { id: 2234, color: 'green', image: socksGreenImage, quantity: 50 },
-  { id: 2235, color: 'blue', image: socksBlueImage, quantity: 0 },
+  {id: 2234, color: 'green', image: socksGreenImage, quantity: 50},
+  {id: 2235, color: 'blue', image: socksBlueImage, quantity: 0},
 ])
-    
+
 const title = computed(() => {
   return brand.value + ' ' + product.value
 })
@@ -51,43 +53,58 @@ function updateVariant(index) {
 </script>
 
 <template>
-  <div class="product-display">
-    <div class="product-container">
-      <div class="product-image">
-        <img v-bind:src="image">
-      </div>
-      <div class="product-info">
-        <h1>{{ title }}</h1>
-        <p v-if="inStock">In Stock</p>
-        <p v-else>Out of Stock</p>
-        <p>Shipping: {{ shipping }}</p>
-        <ul>
-          <li v-for="detail in details">{{ detail }}</li>
-        </ul>
-        <div 
-          v-for="(variant, index) in variants" 
-          class="color-circle" 
-          :style="{ backgroundColor: variant.color }"
-          :key="variant.id" 
-          @mouseover="updateVariant(index)" 
+  <div class="p-4">
+    <div class="flex flex-row flex-wrap">
+      <ResponsiveWidth>
+        <img
+            class="w-[70%] m-10 p-4 border-2 border-solid mist-border-2"
+            v-bind:src="image"
         >
+      </ResponsiveWidth>
+
+      <ResponsiveWidth>
+        <div class="ml-3 md:ml-0">
+          <h1>{{ title }}</h1>
+          <p v-if="inStock">In Stock</p>
+          <p v-else>Out of Stock</p>
+          <p>Shipping: {{ shipping }}</p>
+          <ul>
+            <li v-for="detail in details">{{ detail }}</li>
+          </ul>
+          <div
+              v-for="(variant, index) in variants"
+              class="w-12 h-12 mt-2 border-2 border-solid mist-border-2 rounded-[50%]"
+              :class="{
+            green: 'bg-[green]',
+            blue: 'bg-[blue]',
+          }[variant.color]"
+              :key="variant.id"
+              @mouseover="updateVariant(index)"
+          >
+          </div>
+
+          <PrettyButton :isActive="inStock" @click="addToCart">
+            Add to Cart
+          </PrettyButton>
+
+          <!--        <button -->
+          <!--          class="w-40 h-16 m-8 p-5 text-lg leading-none text-cloud text-center rounded-[5px] btn-shading-bn"-->
+          <!--          :class="inStock ?-->
+          <!--          ['bg-midnight', 'cursor-pointer'] :-->
+          <!--          ['bg-mist', 'cursor-not-allowed']"-->
+          <!--          :disabled="!inStock" -->
+          <!--          @click="addToCart"-->
+          <!--        >-->
+          <!--          Add to Cart-->
+          <!--        </button>-->
         </div>
-        
-        <button 
-          class="button" 
-          :class="{ disabled: !inStock }" 
-          :disabled="!inStock" 
-          @click="addToCart"
-        >
-          Add to Cart
-        </button>
-      </div>
+      </ResponsiveWidth>
     </div>
   </div>
 </template>
 
 <style scoped>
-
+/*
 .product-display {
   padding: 16px;
 }
@@ -102,7 +119,7 @@ function updateVariant(index) {
   width: 100%;
 }
 
-img {
+.img{
   width: 70%;
   margin: 40px;
   padding: 15px;
@@ -113,7 +130,6 @@ img {
   width: 100%;
   margin-left: 10px;
 }
-
 .color-circle {
   width: 50px;
   height: 50px;
@@ -134,7 +150,7 @@ img {
   box-shadow: inset 0 -0.6em 1em -0.35em rgba(0, 0, 0, 0.17),
     inset 0 0.6em 2em -0.3em rgba(255, 255, 255, 0.15),
     inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12);
-  
+
   background-color: #39495c;
   cursor: pointer;
 }
@@ -154,5 +170,6 @@ img {
     width: 50%;
     margin-left: 0;
   }
-} 
+}
+*/
 </style>
